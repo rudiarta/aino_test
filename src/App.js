@@ -5,8 +5,20 @@ import {
   Route
 } from "react-router-dom";
 import routes from './routes'
+import {store} from './redux/index'
 
 function App() {
+  
+    store.dispatch({
+      type: "LOGIN_FAILED"
+    })
+    
+    if(localStorage.keyToken !== undefined){
+      store.dispatch({
+        type: "LOGIN_SUCCESS"
+      })
+    }
+
   return (
     <Router>
       <Switch>

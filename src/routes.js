@@ -1,9 +1,15 @@
 import Login from './container/login'
+import Category from './container/category'
 
 const routes = [
     {
       path: "/",
-      component: Login
+      component: Login,
+      exact: true
+    },
+    {
+      path: "/category",
+      component: Category
     }
   ];
 

@@ -1,14 +1,51 @@
-import React from 'react'
-import {Form, Button, Container} from 'react-bootstrap'
+import React, {useState} from 'react'
+import { connect } from 'react-redux'
+import {Form, Button, Container, Row} from 'react-bootstrap'
+import {Redirect} from 'react-router-dom'
+import { loginUser } from '../../redux/authReducer/action'
+import axios from 'axios'
 
-export default function Login() {
+import "./style.scss"
+
+function Login(props) {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const submitHandler = () => {
+        axios.post('https://private-anon-281fe4fdb6-retailmockapp.apiary-mock.com/auth/login', {
+        email: email,
+        password: password
+      })
+      .then((response) => {
+        console.log(response.data.data.access_token.token);
+        // setLogin(!isLogin)
+        loginUser(props)
+        let token = response.data.data.access_token.token
+        localStorage.setItem('keyToken', token)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    
+
+    const loginIn = (<Redirect to={{
+        pathname: "/category"
+      }}/>);
+    
+    
     return (
-        <div>
+        <div className="Login">
             <Container>
+            
+            {console.log(props.isLogin)}
+            {props.isLogin ? loginIn : ''}
+            <Row className="justify-content-md-center">
                 <Form>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" />
+                        <Form.Control onChange={(e) => setEmail(e.target.value)} value={email} type="email" placeholder="Enter email" />
                         <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                         </Form.Text>
@@ -16,16 +53,20 @@ export default function Login() {
 
                     <Form.Group controlId="formBasicPassword">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" />
+                        <Form.Control onChange={(e) => setPassword(e.target.value)} value={password} type="password" placeholder="Password" />
                     </Form.Group>
-                    <Form.Group controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label="Check me out" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button onClick={submitHandler} className="btn-margin" variant="primary" type="button">
                         Submit
                     </Button>
                 </Form>
+                </Row>
             </Container>
         </div>
     )
 }
+
+const mapStateToProps = (state) => ({
+    isLogin: state.isLogin
+})
+
+export default connect(mapStateToProps)(Login);
