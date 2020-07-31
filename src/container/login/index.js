@@ -19,7 +19,6 @@ function Login(props) {
       })
       .then((response) => {
         console.log(response.data.data.access_token.token);
-        // setLogin(!isLogin)
         loginUser(props)
         let token = response.data.data.access_token.token
         localStorage.setItem('keyToken', token)
@@ -31,7 +30,7 @@ function Login(props) {
     
 
     const loginIn = (<Redirect to={{
-        pathname: "/category"
+        pathname: "/dashboard"
       }}/>);
     
     
@@ -39,7 +38,6 @@ function Login(props) {
         <div className="Login">
             <Container>
             
-            {console.log(props.isLogin)}
             {props.isLogin ? loginIn : ''}
             <Row className="justify-content-md-center">
                 <Form>

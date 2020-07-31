@@ -1,5 +1,5 @@
 import Login from './container/login'
-import Category from './container/category'
+import Dashboard from './container/dashboard'
 
 const routes = [
     {
@@ -8,8 +8,8 @@ const routes = [
       exact: true
     },
     {
-      path: "/category",
-      component: Category
+      path: "/dashboard",
+      component: Dashboard
     }
   ];
 
